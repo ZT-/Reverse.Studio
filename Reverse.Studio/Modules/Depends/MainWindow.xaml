@@ -1,0 +1,109 @@
+﻿<controls:MetroWindow 
+        x:Class="Virtion.Depends.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        WindowStartupLocation="CenterScreen"
+        Title="Virtion.Depends - " 
+        Height="600" Width="800"
+        Background="#eeeef2"
+        GlowBrush="Black"    
+        WindowTitleBrush="#eeeef2"
+        TitleForeground="#454545"
+        WindowMaxButtonStyle="{DynamicResource CommondButtonStyle}"      
+        WindowMinButtonStyle="{DynamicResource CommondButtonStyle}"
+        WindowCloseButtonStyle="{DynamicResource CommondButtonStyle}"
+        AllowDrop="True"
+        PreviewDragEnter="Window_PreviewDragEnter"
+        PreviewDragOver="Window_PreviewDragEnter"
+        PreviewDrop="Window_PreviewDrop"
+        Icon="icon.ico"
+    >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition />
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <Border BorderBrush="#007acc" 
+            BorderThickness="0,0,0,1.5">
+            <Grid>
+                <ToolBar >
+                    <Button x:Name="B_Open"
+                        Click="B_Open_OnClick"
+                        Content="Open"
+                       />
+                    <Button x:Name="B_Other"
+                        Click="B_Other_OnClick"
+                        Content=""
+                       />
+                </ToolBar>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <Border 
+                BorderBrush="#CCCCCC"
+                BorderThickness="2,1">
+                <Grid Grid.Column="0"
+                         Background="#eeeef2"
+                         >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Border
+                        Grid.Row="0"
+                        Background="#007acc">
+                        <TextBlock                     
+                        Text="Symbol" 
+                        Margin="10,0"
+                        VerticalAlignment="Center"
+                        Foreground="White"
+                        />
+                    </Border>
+                    <TreeView x:Name="TV_Tree"
+                          Grid.Row="1"    
+                          Background="#eeeef2"  
+                     />
+                </Grid>
+            </Border>
+            <GridSplitter Width="2"
+                  Background="#CCCCCC"        
+                  />
+            <Grid  Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>    
+                <TextBox x:Name="TB_Search" 
+                    VerticalAlignment="Top" 
+                    Margin="5,5"     
+                    TextChanged="TB_Search_OnTextChanged"     
+                   />
+                <ListBox x:Name="LB_List"
+                    Grid.Row="1"
+                    Background="White" 
+                    Margin="5,5,5,5"     
+                />
+            </Grid>
+        </Grid>
+
+        <Border x:Name="B_InfoPlane"
+            Grid.Row="2"
+            Background="#007acc">
+            <TextBlock  x:Name="TB_Tip"
+                Margin="5,0"
+                VerticalAlignment="Center"        
+                Foreground="White"
+                Text=""        
+            />
+        </Border>
+
+    </Grid>
+</controls:MetroWindow >

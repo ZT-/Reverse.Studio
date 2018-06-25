@@ -1,0 +1,297 @@
+// EnumProcessDemo.cpp : 定义控制台应用程序的入口点。
+//
+
+#include "stdafx.h"
+#include <Windows.h>
+#include <TlHelp32.h>//CreateToolhelp32Snapshot
+#include <Psapi.h>//EnumProcesses
+
+bool GetPrivileges()
+{
+    // 取得当前进程的[Token](标识)句柄
+    HANDLE hToken;
+    if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken)) {
+        if(GetLastError() == ERROR_CALL_NOT_IMPLEMENTED) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    // 取得调试的[LUID](本地唯一的标识符)值
+    TOKEN_PRIVILEGES tokenPrivilege = { 0 };
+    TOKEN_PRIVILEGES oldPrivilege = { 0 };
+    DWORD dwPrivilegeSize;
+    if (!LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &tokenPrivilege.Privileges[0].Luid)) {
+        CloseHandle(hToken);
+        return false;
+    }
+
+    // 设置特权数组的元素个数
+    tokenPrivilege.PrivilegeCount = 1;
+
+    // 设置[LUID]的属性值
+    tokenPrivilege.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+
+    // 为当前进程取得DEBUG权限
+    if (!AdjustTokenPrivileges(hToken, FALSE, &tokenPrivilege, sizeof(TOKEN_PRIVILEGES), &oldPrivilege, &dwPrivilegeSize)) {
+        CloseHandle(hToken);
+        return false;
+    }
+    //程序结束时要记得释放句柄
+    //CloseHandle(hToken);
+    return true;
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+    BOOL ret;
+    //ret = GetPrivileges();
+    //printf("GetPrivileges -> %d\n", ret);
+
+    /*
+    //可以获得包括系统进程在内的所有存在PID的进程（唯一一个无PID的“系统中断”进程获取不到）
+    HANDLE WINAPI CreateToolhelp32Snapshot(
+    DWORD dwFlags,      //用来指定“快照”中需要返回的对象
+    DWORD th32ProcessID //指定将要快照的进程ID。如果该参数为0表示快照当前进程。该参数只有在设置了TH32CS_SNAPHEAPLIST或者TH32CS_SNAPMODULE后才有效，在其他情况下该参数被忽略，所有的进程都会被快照。
+    );
+    // The th32ProcessID argument is only used if TH32CS_SNAPHEAPLIST or
+    // TH32CS_SNAPMODULE is specified. th32ProcessID == 0 means the current
+    // process.
+    //
+    // NOTE that all of the snapshots are global except for the heap and module
+    //      lists which are process specific. To enumerate the heap or module
+    //      state for all WIN32 processes call with TH32CS_SNAPALL and the
+    //      current process. Then for each process in the TH32CS_SNAPPROCESS
+    //      list that isn't the current process, do a call with just
+    //      TH32CS_SNAPHEAPLIST and/or TH32CS_SNAPMODULE.
+    //
+    // dwFlags
+    //
+    #define TH32CS_SNAPHEAPLIST 0x00000001  //在快照中包含在th32ProcessID中指定的进程的所有的堆
+    #define TH32CS_SNAPPROCESS  0x00000002  //在快照中包含系统中所有的进程
+    #define TH32CS_SNAPTHREAD   0x00000004  //在快照中包含系统中所有的线程
+    #define TH32CS_SNAPMODULE   0x00000008  //在快照中包含在th32ProcessID中指定的进程的所有的模块
+    #define TH32CS_SNAPMODULE32 0x00000010  //在快照中包含系统中所有的模块
+    #define TH32CS_SNAPALL      (TH32CS_SNAPHEAPLIST | TH32CS_SNAPPROCESS | TH32CS_SNAPTHREAD | TH32CS_SNAPMODULE)  //在快照中包含系统中所有的进程和线程
+    #define TH32CS_INHERIT      0x80000000  //声明快照句柄是可继承的
+
+    调用成功，返回快照的句柄，调用失败，返回INVALID_HANDLE_VALUE
+    */
+    DWORD dwFlags = TH32CS_SNAPPROCESS;
+    DWORD th32ProcessID = 0;
+    HANDLE handle = CreateToolhelp32Snapshot(dwFlags, th32ProcessID);
+    if (handle == INVALID_HANDLE_VALUE) {
+        printf("CreateToolhelp32Snapshot -> INVALID_HANDLE_VALUE -> fail(%ld)\n", GetLastError());
+    }
+    else {
+        printf("CreateToolhelp32Snapshot -> ret=%p -> succ\n", handle);
+
+        /*
+        typedef struct tagPROCESSENTRY32W
+        {
+        DWORD   dwSize;
+        DWORD   cntUsage;               //此进程的引用计数（deprecated，always zero）
+        DWORD   th32ProcessID;          // this processID，就是任务管理器里面的进程的PID
+        ULONG_PTR th32DefaultHeapID;    //进程默认堆（deprecated，always zero）
+        DWORD   th32ModuleID;           // associated exe，进程模块ID（deprecated，always zero）
+        DWORD   cntThreads;             //此进程开启的线程数
+        DWORD   th32ParentProcessID;    // this process's parent process
+        LONG    pcPriClassBase;         // Base priority of process's threads，线程优先权
+        DWORD   dwFlags;                //（deprecated，always zero）
+        WCHAR   szExeFile[MAX_PATH];    // Path，进程可执行程序名。但是，如果被调用进程是一个64位程序，您必须调用QueryFullProcessImageName函数去获取64位进程的可执行文件完整路径名。
+        } PROCESSENTRY32W;
+        */
+        PROCESSENTRY32 processEntry32 = { 0 };
+        processEntry32.dwSize = sizeof(processEntry32);
+
+        int processCnt = 0;
+        //遍历进程快照，轮流显示每个进程的信息
+        BOOL hasNext = Process32First(handle, &processEntry32);
+        while (hasNext) {
+            processCnt++;
+            _tprintf(_T("Process32Next -> th32ProcessID=%ld, cntThreads=%ld, th32ParentProcessID=%ld, pcPriClassBase=%ld, szExeFile=%s\n"), processEntry32.th32ProcessID, processEntry32.cntThreads, processEntry32.th32ParentProcessID, processEntry32.pcPriClassBase, processEntry32.szExeFile);
+            hasNext = Process32Next(handle, &processEntry32);
+        }
+        printf("CreateToolhelp32Snapshot count=%d\n", processCnt);
+
+        CloseHandle(handle);
+    }
+
+    /*
+    BOOL WINAPI EnumProcesses (
+    _Out_writes_bytes_(cb) DWORD * lpidProcess, //Pointer to an array that receives the list of process identifiers.接收进程标识符的数组.
+    _In_ DWORD cb,                              //Size of the pProcessIds array, in bytes.
+    _Out_ LPDWORD lpcbNeeded                    //Number of bytes returned in the pProcessIds array.数组返回的字节数
+    );
+    成功返回非零数,失败返回零,可以使用函数 GetLastError获取错误信息.
+
+    下面算式可以得出返回了多少进程：
+    nReturned = cbNeeded / sizeof(DWORD)。
+
+    定义个比较大的数组来接收进程IDs,是一个比较好的选择.虽然文档将返回的 DWORD 命名为“pBytesRrturned”，实际上是没有办法知道到底要传多大的数组的。EnumProcesses()根本不会在 pBytesRrturned 中返回一个大于 cb 参数传递的数组值。结果，唯一确保 EnumProcesses()函数成功的方法是分配一个 DWORD 数组，并且，如果返回的 cbNeeded 等于 cb，分配一个较大的数组，并不停地尝试直到 cbNeeded 小于 cb
+    */
+    const DWORD PID_CB = 1024;
+    DWORD pidProcesss[PID_CB];
+    DWORD pcbNeeded;
+    ret = EnumProcesses(pidProcesss, PID_CB, &pcbNeeded);
+    if (!ret) {
+        //printf("EnumProcesses -> fail(%ld)\n", GetLastError());
+    }
+    else
+    {
+        //printf("EnumProcesses -> pcbNeeded=%ld -> succ\n", pcbNeeded);
+
+        DWORD processCnt = pcbNeeded / sizeof(DWORD);
+        printf("processCnt = %ld\n", processCnt);
+
+        for (DWORD i = 0; i < processCnt; i++) {
+            /*
+            WINBASEAPI HANDLE WINAPI OpenProcess(
+                _In_ DWORD dwDesiredAccess,
+                _In_ BOOL bInheritHandle,
+                _In_ DWORD dwProcessId
+            );
+
+            #define PROCESS_TERMINATE                  (0x0001) //允许函数TerminateProcess 使用此句柄关闭进程.
+            #define PROCESS_CREATE_THREAD              (0x0002)
+            #define PROCESS_SET_SESSIONID              (0x0004)
+            #define PROCESS_VM_OPERATION               (0x0008) //允许函数VirtualProtectEx使用此句柄修改进程的虚拟内存.
+            #define PROCESS_VM_READ                    (0x0010)
+            #define PROCESS_VM_WRITE                   (0x0020)
+            #define PROCESS_DUP_HANDLE                 (0x0040)
+            #define PROCESS_CREATE_PROCESS             (0x0080)
+            #define PROCESS_SET_QUOTA                  (0x0100)
+            #define PROCESS_SET_INFORMATION            (0x0200)
+            #define PROCESS_QUERY_INFORMATION          (0x0400)
+            #define PROCESS_SUSPEND_RESUME             (0x0800)
+            #define PROCESS_QUERY_LIMITED_INFORMATION  (0x1000)
+            #define PROCESS_SET_LIMITED_INFORMATION    (0x2000)
+            #if (NTDDI_VERSION >= NTDDI_VISTA)
+            #define PROCESS_ALL_ACCESS        (STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | 0xFFFF)
+            #else
+            #define PROCESS_ALL_ACCESS        (STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | 0xFFF)
+            #endif
+            */  
+            DWORD dwDesiredAccess = PROCESS_VM_READ | PROCESS_QUERY_INFORMATION;
+            //DWORD dwDesiredAccess = PROCESS_ALL_ACCESS;
+            BOOL bInheritHandle = FALSE;
+            DWORD dwProcessId = pidProcesss[i];
+            //OpenProcess后返回的句柄在最后要记得关闭
+            handle = OpenProcess(dwDesiredAccess, bInheritHandle, dwProcessId);
+            if (handle == NULL || handle == INVALID_HANDLE_VALUE) {
+                //PID等于0的错误码是87(参数错误);5是(拒绝访问);6是句柄无效;299是仅完成部分的 ReadProcessMemoty 或 WriteProcessMemory 请求。
+                //只有3个进程open不了,提升权限也无效("System Idle Process(pid=0)"、"System(pid=4)"、"audiodg.exe(pid=336)")
+                printf("OpenProcess dwProcessId=%ld -> handle=%p(NULL or INVALID_HANDLE_VALUE) -> fail(%ld)\n", dwProcessId, handle, GetLastError());
+            }
+            else {
+                printf("OpenProcess dwProcessId=%ld -> handle=%p -> succ\n", dwProcessId, handle);
+                /*
+                BOOL WINAPI EnumProcessModulesEx(
+                    _In_  HANDLE  hProcess,
+                    _Out_ HMODULE *lphModule,
+                    _In_  DWORD   cb,
+                    _Out_ LPDWORD lpcbNeeded,
+                    _In_  DWORD   dwFilterFlag
+                );
+
+                dwFilterFlag可以是下列值
+                #define LIST_MODULES_DEFAULT 0x0  // This is the default one app would get without any flag.
+                #define LIST_MODULES_32BIT   0x01  // list 32bit modules in the target process.
+                #define LIST_MODULES_64BIT   0x02  // list all 64bit modules. 32bit exe will be stripped off.
+                // list all the modules
+                #define LIST_MODULES_ALL   (LIST_MODULES_32BIT | LIST_MODULES_64BIT)
+                */
+
+                const DWORD hModuleCb = 1024;
+                HMODULE hModules[hModuleCb];
+                DWORD cbNeeded;
+                DWORD dwFilterFlag = LIST_MODULES_ALL;
+                ret = EnumProcessModulesEx(handle, hModules, hModuleCb, &cbNeeded, dwFilterFlag);
+                if (!ret) {
+                    /*
+                    问题描述
+                    错误码为299(仅完成部分的 ReadProcessMemoty 或 WriteProcessMemory 请求)
+                    如果在WOW64上运行的32位应用程序调用本函数，那它只能枚举32位进程中的模块。对于64位的进程，本函数将执行失败，错误代码是ERROR_PARTIAL_COPY (299)。
+                    解决方案：
+                    将生成的程序改为64位
+                    */
+                    printf("EnumProcessModulesEx dwProcessId=%ld, handle=%p -> ret=%d -> fail(%d)\n", dwProcessId, handle, ret, GetLastError());
+                }
+                else
+                {
+                    //printf("EnumProcessModulesEx dwProcessId=%ld, handle=%p -> ret=%d -> succ\n", dwProcessId, handle, ret);
+
+                    DWORD moduleCnt = cbNeeded / sizeof(HMODULE);
+                    printf("moduleCnt = %ld\n", moduleCnt);
+
+                    for (DWORD j = 0; j<moduleCnt; j++) {
+                        /*
+                        返回进程名包含路径
+                        _Success_(return != 0)
+                        _Ret_range_(1, nSize)
+                        DWORD WINAPI GetModuleFileNameExW(
+                            _In_opt_ HANDLE hProcess,
+                            _In_opt_ HMODULE hModule,
+                            _When_(return < nSize, _Out_writes_to_(nSize, return + 1))
+                            _When_(return == nSize, _Out_writes_all_(nSize))
+                            LPWSTR lpFilename,
+                            _In_ DWORD nSize
+                        );
+                        */
+                        TCHAR szModuleName[MAX_PATH] = { 0 };
+                        DWORD nSize = MAX_PATH;
+                        DWORD dwRet = GetModuleFileNameEx(handle, hModules[j], szModuleName, nSize);
+                        if (dwRet == 0) {
+                            //printf("GetModuleFileNameEx dwProcessId=%ld, handle=%p, hModules=%p-> fail(%d)\n", dwProcessId, handle, (unsigned int)hModules[j], GetLastError());
+                        }
+                        else {
+                            //_tprintf(_T("GetModuleFileNameEx dwProcessId=%ld, handle=%p, hModules=%p -> ret=%ld, szModuleName=%s -> succ\n"), dwProcessId, handle, (unsigned int)hModules[j], dwRet, szModuleName);
+                        }
+
+                        /*
+                        返回进程名不包含路径
+                        DWORD WINAPI GetModuleBaseNameW(
+                            _In_ HANDLE hProcess,
+                            _In_opt_ HMODULE hModule,
+                            _Out_writes_(nSize) LPTSTR lpBaseName,
+                            _In_ DWORD nSize
+                        );
+                        */
+                        TCHAR lpBaseName[MAX_PATH] = { 0 };
+                        dwRet = GetModuleBaseName(handle, hModules[j], lpBaseName, nSize);
+                        if (dwRet == 0) {
+                            //printf("GetModuleBaseName handle=%p, hModule=%p -> fail(%d)\n", handle, (unsigned int)hModules[j], GetLastError());
+                        }
+                        else {
+                            //_tprintf(_T("GetModuleBaseName dwProcessId=%ld, handle=%p, hModule=%p -> ret=%ld, lpBaseName=%s -> succ\n"), dwProcessId, handle, (unsigned int)hModules[j], dwRet, lpBaseName);
+                            //strstr(str1,str2) 函数用于判断字符串str2是否是str1的子串。
+                            if (_tcsstr(lpBaseName, _T("notepad.exe"))) {
+                                //需要以terminal的权限打开进程句柄才能关闭进程,否则会失败
+                                HANDLE terminalHandle = OpenProcess(PROCESS_TERMINATE, FALSE, dwProcessId);
+                                if(handle !=NULL && handle != INVALID_HANDLE_VALUE) {
+                                    /*
+                                    WINBASEAPI BOOL WINAPI TerminateProcess(
+                                        _In_ HANDLE hProcess,
+                                        _In_ UINT uExitCode
+                                        );
+                                    */
+                                    ret = TerminateProcess(terminalHandle, 0);
+                                    printf("TerminateProcess dwProcessId=%ld -> ret=%d\n", dwProcessId, ret);
+                                    CloseHandle(terminalHandle);
+                                }
+                                else {
+                                    printf("OpenProcess dwProcessId=%ld -> %d\n", dwProcessId, ret);
+                                }
+                            }
+                        }
+                    }
+                }
+                CloseHandle(handle);
+            }
+        }
+    }
+
+    system("pause");
+    return 0;
+}
