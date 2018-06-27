@@ -72,100 +72,48 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Caliburn.Micro, Version=2.0.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Caliburn.Micro.dll</HintPath>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>Libs\Caliburn.Micro.dll</HintPath>
     </Reference>
-    <Reference Include="Caliburn.Micro.Platform, Version=2.0.2.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Caliburn.Micro.Platform.dll</HintPath>
+    <Reference Include="Caliburn.Micro.Platform">
+      <HintPath>Libs\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="Frida, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\x64\Debug\Frida.dll</HintPath>
+    <Reference Include="Frida">
+      <HintPath>Libs\Frida.dll</HintPath>
     </Reference>
-    <Reference Include="Gemini, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Gemini.dll</HintPath>
+    <Reference Include="Gemini">
+      <HintPath>Libs\Gemini.dll</HintPath>
     </Reference>
-    <Reference Include="Gemini.Modules.CodeCompiler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Gemini.Modules.CodeCompiler.dll</HintPath>
+    <Reference Include="Gemini.Modules.CodeCompiler">
+      <HintPath>Libs\Gemini.Modules.CodeCompiler.dll</HintPath>
     </Reference>
-    <Reference Include="Gemini.Modules.CodeEditor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Gemini.Modules.CodeEditor.dll</HintPath>
+    <Reference Include="Gemini.Modules.CodeEditor">
+      <HintPath>Libs\Gemini.Modules.CodeEditor.dll</HintPath>
     </Reference>
-    <Reference Include="Gemini.Modules.ErrorList, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Gemini.Modules.ErrorList.dll</HintPath>
+    <Reference Include="Gemini.Modules.ErrorList">
+      <HintPath>Libs\Gemini.Modules.ErrorList.dll</HintPath>
     </Reference>
-    <Reference Include="Gemini.Modules.GraphEditor, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Gemini.Modules.GraphEditor.dll</HintPath>
+    <Reference Include="Gemini.Modules.GraphEditor">
+      <HintPath>Libs\Gemini.Modules.GraphEditor.dll</HintPath>
     </Reference>
-    <Reference Include="Gemini.Modules.Inspector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Gemini.Modules.Inspector.dll</HintPath>
+    <Reference Include="Gemini.Modules.Inspector">
+      <HintPath>Libs\Gemini.Modules.Inspector.dll</HintPath>
     </Reference>
-    <Reference Include="Gemini.Modules.Output, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Gemini.Modules.Output.dll</HintPath>
+    <Reference Include="Gemini.Modules.Output">
+      <HintPath>Libs\Gemini.Modules.Output.dll</HintPath>
     </Reference>
-    <Reference Include="Gemini.Modules.PropertyGrid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Gemini.Modules.PropertyGrid.dll</HintPath>
+    <Reference Include="Gemini.Modules.PropertyGrid">
+      <HintPath>Libs\Gemini.Modules.PropertyGrid.dll</HintPath>
     </Reference>
-    <Reference Include="Gu.Localization, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Gu.Localization.dll</HintPath>
+    <Reference Include="ICSharpCode.AvalonEdit">
+      <HintPath>Libs\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
-    <Reference Include="Gu.Wpf.Localization, Version=6.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Gu.Wpf.Localization.dll</HintPath>
-    </Reference>
-    <Reference Include="HelixToolkit, Version=2015.1.657.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\HelixToolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="HelixToolkit.Wpf, Version=2015.1.657.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\HelixToolkit.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\ICSharpCode.AvalonEdit.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro, Version=1.2.4.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\MahApps.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Microsoft.CodeAnalysis.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Libs\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\System.Collections.Immutable.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Reflection.Metadata, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\System.Reflection.Metadata.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -177,34 +125,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.AvalonDock, Version=2.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Xceed.Wpf.AvalonDock.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=2.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=2.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=2.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2013, Version=2.9.0.1, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Xceed.Wpf.AvalonDock.Themes.VS2013.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.DataGrid, Version=2.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Xceed.Wpf.DataGrid.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Toolkit, Version=2.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -217,20 +137,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Modules\PeEditor\Commands\ViewAdbCommandDefinition.cs" />
-    <Compile Include="Modules\PeEditor\Commands\ViewHomeCommandDefinition.cs" />
-    <Compile Include="Modules\PeEditor\Commands\ViewAdbCommandHandler.cs" />
-    <Compile Include="Modules\PeEditor\Commands\ViewHomeCommandHandler.cs" />
-    <Compile Include="Modules\PeEditor\Module.cs" />
-    <Compile Include="Modules\PeEditor\ViewModels\AdbViewModel.cs" />
-    <Compile Include="Modules\PeEditor\ViewModels\HomeViewModel.cs" />
-    <Compile Include="Modules\PeEditor\Views\AdbView.xaml.cs">
+    <Compile Include="Modules\Android\Commands\ViewAdbCommandDefinition.cs" />
+    <Compile Include="Modules\Android\Commands\ViewHomeCommandDefinition.cs" />
+    <Compile Include="Modules\Android\Commands\ViewAdbCommandHandler.cs" />
+    <Compile Include="Modules\Android\Commands\ViewHomeCommandHandler.cs" />
+    <Compile Include="Modules\Android\Module.cs" />
+    <Compile Include="Modules\Android\ViewModels\AdbViewModel.cs" />
+    <Compile Include="Modules\Android\ViewModels\HomeViewModel.cs" />
+    <Compile Include="Modules\Android\Views\AdbView.xaml.cs">
       <DependentUpon>AdbView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\PeEditor\Views\HomeView.xaml.cs">
+    <Compile Include="Modules\Android\Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\PeEditor\Views\WinCmd.cs" />
+    <Compile Include="Modules\Android\Views\WinCmd.cs" />
     <Compile Include="Modules\Startup\Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -257,11 +177,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Modules\PeEditor\Views\AdbView.xaml">
+    <Page Include="Modules\Android\Views\AdbView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Modules\PeEditor\Views\HomeView.xaml">
+    <Page Include="Modules\Android\Views\HomeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

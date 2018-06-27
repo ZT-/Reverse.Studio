@@ -18,7 +18,7 @@ namespace Virtion.Knife.Modules.PeEditor.Views
         {
             InitializeComponent();
             DataContext = this;
-            Loaded += new RoutedEventHandler(MainWindow_Loaded);
+            Loaded += MainWindow_Loaded;
         }
 
         private Frida.DeviceManager deviceManager;
@@ -47,7 +47,7 @@ namespace Virtion.Knife.Modules.PeEditor.Views
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             deviceManager = new Frida.DeviceManager(Dispatcher);
-            deviceManager.Changed += new EventHandler(deviceManager_Changed);
+            deviceManager.Changed += deviceManager_Changed;
             RefreshDeviceList();
             RefreshAllowedActions();
         }

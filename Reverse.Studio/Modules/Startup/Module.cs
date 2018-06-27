@@ -32,13 +32,13 @@ namespace Virtion.Knife.Modules.Startup
             Shell.ToolBars.Visible = true;
 
             MainWindow.WindowState = WindowState.Maximized;
-            MainWindow.Title = "Geo";
+            MainWindow.Title = "Virtion Reverse Studio";
 
-            Shell.StatusBar.AddItem("Hello world!", new GridLength(1, GridUnitType.Star));
+            Shell.StatusBar.AddItem("Analysis Mode", new GridLength(1, GridUnitType.Star));
             Shell.StatusBar.AddItem("Ln 44", new GridLength(100));
             Shell.StatusBar.AddItem("Col 79", new GridLength(100));
 
-			_output.AppendLine("Started up");
+			//_output.AppendLine("Started up");
 
 		    Shell.ActiveDocumentChanged += (sender, e) => RefreshInspector();
 		    RefreshInspector();
